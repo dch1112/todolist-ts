@@ -2,7 +2,7 @@ import React from "react";
 import {FilterValueType, TaskType} from "./App";
 
 type PropsType = {
-  title: string,
+  title: string
   tasks: Array<TaskType>
   removeTask: (taskID: number) => void
   changeFilter: (filterValue: FilterValueType) => void
