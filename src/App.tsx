@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import './App.css';
 import {Todolist} from "./Todolist";
 import {v1} from 'uuid';
+import AddItemForm from "./AddItemForm";
 
 export type FilterValueType = 'all' | 'active' | 'completed'
 
@@ -15,7 +16,7 @@ export type TasksType = {
   [key: string]: Array<TaskType>
 }
 
-export type todolistType = {
+export type TodolistType = {
   id: string
   title: string
   filter: FilterValueType
@@ -26,7 +27,7 @@ const todolistId2 = v1()
 
 
 function App() {
-  const [todolists, setTodolists] = useState<Array<todolistType>>([
+  const [todolists, setTodolists] = useState<Array<TodolistType>>([
     {id: todolistId1, title: 'What to Learn', filter: 'all'},
     {id: todolistId2, title: 'What to Buy', filter: 'all'}
   ])
@@ -78,10 +79,38 @@ function App() {
     }
   }
 
-  function removeTodolist (todolistId: string) {
+  function removeTodolist(todolistId: string) {
     setTodolists(todolists.filter(tl => tl.id != todolistId))
     delete tasks[todolistId]
     setTasks({...tasks})
+  }
+
+  function addTodolist(title: string) {
+    const newTodolistID = v1()
+    const newTodolist: TodolistType =
+      {
+        id: newTodolistID,
+        title: title,
+        filter: 'all'
+      }
+    setTodolists([...todolists, newTodolist])
+    setTasks({...tasks, [newTodolistID]: []})
+  }
+
+  function changeTaskTitle(taskId: string, title: string, todolistId: string) {
+    const task = tasks[todolistId].find(task => task.id === taskId)
+    if (task) {
+      task.title = title
+      setTasks({...tasks})
+    }
+  }
+
+  function changeTodolistTitle(title: string, todolistId: string) {
+    const todolist = todolists.find(todolist => todolist.id === todolistId)
+    if (todolist) {
+      todolist.title = title
+    }
+    setTodolists([...todolists])
   }
 
   return (
@@ -94,8 +123,6 @@ function App() {
         if (tl.filter === 'completed') {
           tasksForTodolist = tasks[tl.id].filter(task => task.isDone)
         }
-
-debugger
         return <Todolist title={tl.title}
                          key={tl.id}
                          todolistId={tl.id}
@@ -106,10 +133,14 @@ debugger
                          changeTaskStatus={changeStatus}
                          filter={tl.filter}
                          removeTodolist={removeTodolist}
+                         changeTaskTitle={changeTaskTitle}
+                         changeTodolistTitle={changeTodolistTitle}
         />
       })}
+      <AddItemForm addItem={addTodolist}/>
     </div>
   );
+
 }
 
 export default App;
