@@ -3,6 +3,8 @@ import './App.css';
 import {Todolist} from "./Todolist";
 import {v1} from 'uuid';
 import AddItemForm from "./AddItemForm";
+import {AppBar, Button, Container, IconButton, Toolbar, Typography, Grid, Paper} from "@material-ui/core";
+import {Menu} from "@material-ui/icons";
 
 export type FilterValueType = 'all' | 'active' | 'completed'
 
@@ -115,29 +117,53 @@ function App() {
 
   return (
     <div className="App">
-      {todolists.map(tl => {
-        let tasksForTodolist = tasks[tl.id]
-        if (tl.filter === 'active') {
-          tasksForTodolist = tasks[tl.id].filter(task => !task.isDone)
-        }
-        if (tl.filter === 'completed') {
-          tasksForTodolist = tasks[tl.id].filter(task => task.isDone)
-        }
-        return <Todolist title={tl.title}
-                         key={tl.id}
-                         todolistId={tl.id}
-                         tasks={tasksForTodolist}
-                         removeTask={removeTask}
-                         changeFilter={changeFilter}
-                         addTask={addTask}
-                         changeTaskStatus={changeStatus}
-                         filter={tl.filter}
-                         removeTodolist={removeTodolist}
-                         changeTaskTitle={changeTaskTitle}
-                         changeTodolistTitle={changeTodolistTitle}
-        />
-      })}
-      <AddItemForm addItem={addTodolist}/>
+      <AppBar position="static">
+        <Toolbar>
+          <IconButton edge="start" color="inherit" aria-label="menu">
+            <Menu/>
+          </IconButton>
+          <Typography variant="h6">
+            News
+          </Typography>
+          <Button color="inherit">Login</Button>
+        </Toolbar>
+      </AppBar>
+      <Container fixed>
+        <Grid container style={{padding: '15px'}}>
+          <AddItemForm addItem={addTodolist}/>
+        </Grid>
+        <Grid container spacing={5}>
+          {
+            todolists.map(tl => {
+              let tasksForTodolist = tasks[tl.id]
+              if (tl.filter === 'active') {
+                tasksForTodolist = tasks[tl.id].filter(task => !task.isDone)
+              }
+              if (tl.filter === 'completed') {
+                tasksForTodolist = tasks[tl.id].filter(task => task.isDone)
+              }
+              return <Grid item>
+                <Paper elevation={5} style={{padding: '15px', borderRadius: '5px'}} square={false}>
+                  <Todolist
+                    title={tl.title}
+                    key={tl.id}
+                    todolistId={tl.id}
+                    tasks={tasksForTodolist}
+                    removeTask={removeTask}
+                    changeFilter={changeFilter}
+                    addTask={addTask}
+                    changeTaskStatus={changeStatus}
+                    filter={tl.filter}
+                    removeTodolist={removeTodolist}
+                    changeTaskTitle={changeTaskTitle}
+                    changeTodolistTitle={changeTodolistTitle}
+                  />
+                </Paper>
+              </Grid>
+            })
+          }
+        </Grid>
+      </Container>
     </div>
   );
 
