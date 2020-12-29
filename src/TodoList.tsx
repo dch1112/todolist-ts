@@ -6,43 +6,43 @@ import {Button, ButtonGroup, Checkbox, IconButton} from "@material-ui/core";
 import {Delete} from "@material-ui/icons";
 
 type PropsType = {
-  todolistId: string
+  todoListId: string
   title: string
   tasks: Array<TaskType>
-  removeTask: (taskID: string, todolistId: string) => void
-  changeFilter: (filterValue: FilterValueType, todolistId: string) => void
-  addTask: (title: string, todolistId: string) => void
-  changeTaskStatus: (taskID: string, isDone: boolean, todolistId: string) => void
+  removeTask: (taskID: string, todoListId: string) => void
+  changeFilter: (filterValue: FilterValueType, todoListId: string) => void
+  addTask: (title: string, todoListId: string) => void
+  changeTaskStatus: (taskID: string, isDone: boolean, todoListId: string) => void
   filter: FilterValueType
-  removeTodolist: (todolistId: string) => void
-  changeTaskTitle: (taskId: string, title: string, todolistId: string) => void
-  changeTodolistTitle: (title: string, todolistId: string) => void
+  removeTodoList: (todoListId: string) => void
+  changeTaskTitle: (taskId: string, title: string, todoListId: string) => void
+  changeTodoListTitle: (title: string, todoListId: string) => void
 }
 
-export function Todolist(props: PropsType) {
+export function TodoList(props: PropsType) {
   // const [title, setTitle] = useState<string>('')
   // const [error, setError] = useState<string | null>(null)
 
-  const onChangeTodolistTitleHandler = (title: string) => {
+  const onChangeTodoListTitleHandler = (title: string) => {
     if (title.trim()) {
-      props.changeTodolistTitle(title.trim(), props.todolistId)
+      props.changeTodoListTitle(title.trim(), props.todoListId)
     }
   }
 
   const tasks = props.tasks.map(task => {
     const onChangeTaskStatusHandler = (e: ChangeEvent<HTMLInputElement>) => {
-      props.changeTaskStatus(task.id, e.currentTarget.checked, props.todolistId)
+      props.changeTaskStatus(task.id, e.currentTarget.checked, props.todoListId)
     }
 
     const onChangeTaskTitleHandler = (title: string) => {
       debugger
       if (title.trim()) {
-        props.changeTaskTitle(task.id, title.trim(), props.todolistId)
+        props.changeTaskTitle(task.id, title.trim(), props.todoListId)
       }
     }
 
     const onClickHandler = () => {
-      props.removeTask(task.id, props.todolistId)
+      props.removeTask(task.id, props.todoListId)
     }
 
     return (
@@ -64,29 +64,29 @@ export function Todolist(props: PropsType) {
   })
 
   const onAllClickHandler = () => {
-    props.changeFilter('all', props.todolistId)
+    props.changeFilter('all', props.todoListId)
   }
   const onActiveClickHandler = () => {
-    props.changeFilter('active', props.todolistId)
+    props.changeFilter('active', props.todoListId)
   }
   const onCompletedClickHandler = () => {
-    props.changeFilter('completed', props.todolistId)
+    props.changeFilter('completed', props.todoListId)
   }
 
-  const onRemoveTodolistHandler = () => {
-    props.removeTodolist(props.todolistId)
+  const onRemoveTodoListHandler = () => {
+    props.removeTodoList(props.todoListId)
   }
 
   const addTask = (title: string) => {
-    props.addTask(title, props.todolistId)
+    props.addTask(title, props.todoListId)
   }
 
 
   return (
     <div>
       <h3><EditableSpan value={props.title}
-                        getNewTitle={onChangeTodolistTitleHandler}/>
-        <IconButton onClick={onRemoveTodolistHandler}>
+                        getNewTitle={onChangeTodoListTitleHandler}/>
+        <IconButton onClick={onRemoveTodoListHandler}>
           <Delete/>
         </IconButton>
       </h3>
