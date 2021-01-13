@@ -81,27 +81,27 @@ export const tasksReducer = (state: TasksType = InitialState, action: ActionsTyp
   }
 }
 
-export const removeTaskAC = (taskId: string, todolistId: string) => ({
-  type: 'REMOVE-TASK' as const,
+export const removeTaskAC = (taskId: string, todolistId: string): RemoveTaskActionType => ({
+  type: 'REMOVE-TASK',
   taskId: taskId,
   todolistId: todolistId
 })
 
-export const addTaskAC = (title: string, todolistId: string) => ({
-  type: 'ADD-TASK' as const,
+export const addTaskAC = (title: string, todolistId: string): AddTaskActionType => ({
+  type: 'ADD-TASK',
   title: title,
   todolistId: todolistId
 })
 
-export const changeTaskStatusAC = (taskId: string, isDone: boolean, todolistId: string) => ({
-  type: 'CHANGE-TASK-STATUS' as const,
+export const changeTaskStatusAC = (taskId: string, isDone: boolean, todolistId: string): ChangeTaskStatusActionType => ({
+  type: 'CHANGE-TASK-STATUS',
   taskId: taskId,
   isDone: isDone,
   todolistId: todolistId
 })
 
-export const changeTaskTitleAC = (taskId: string, title: string, todolistId: string) => ({
-  type: 'CHANGE-TASK-TITLE' as const,
+export const changeTaskTitleAC = (taskId: string, title: string, todolistId: string): ChangeTaskTitleActionType => ({
+  type: 'CHANGE-TASK-TITLE',
   taskId: taskId,
   title: title,
   todolistId: todolistId
