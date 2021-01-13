@@ -66,9 +66,11 @@ export function Todolist(props: PropsType) {
   const onAllClickHandler = () => {
     props.changeFilter('all', props.todolistId)
   }
+
   const onActiveClickHandler = () => {
     props.changeFilter('active', props.todolistId)
   }
+
   const onCompletedClickHandler = () => {
     props.changeFilter('completed', props.todolistId)
   }
@@ -81,11 +83,13 @@ export function Todolist(props: PropsType) {
     props.addTask(title, props.todolistId)
   }
 
-
   return (
     <div>
-      <h3><EditableSpan value={props.title}
-                        getNewTitle={onChangeTodolistTitleHandler}/>
+      <h3>
+        <EditableSpan
+          value={props.title}
+          getNewTitle={onChangeTodolistTitleHandler}
+        />
         <IconButton onClick={onRemoveTodolistHandler}>
           <Delete/>
         </IconButton>
