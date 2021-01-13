@@ -1,6 +1,6 @@
 import {TasksType, TodolistType} from "../App";
 import {v1} from "uuid";
-import {AddTodolistActionType, RemoveTodolistActionType} from "./todolists-reducer";
+import {AddTodolistActionType, RemoveTodolistActionType} from "./todolistsReducer";
 
 export type RemoveTaskActionType = {
   type: 'REMOVE-TASK'
@@ -94,4 +94,3 @@ export const changeTaskTitleAC = (taskId: string, title: string, todolistId: str
   title: title,
   todolistId: todolistId
 })
-

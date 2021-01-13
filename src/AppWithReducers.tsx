@@ -1,10 +1,18 @@
-import React, {useState} from 'react';
+import React, {useReducer, useState} from 'react';
 import './App.css';
 import {Todolist} from "./Todolist";
 import {v1} from 'uuid';
 import AddItemForm from "./AddItemForm";
 import {AppBar, Button, Container, IconButton, Toolbar, Typography, Grid, Paper} from "@material-ui/core";
 import {Menu} from "@material-ui/icons";
+import {
+  addTodolistAC,
+  changeTodolistFilterAC,
+  changeTodolistTitleAC,
+  removeTodolistAC,
+  todolistsReducer
+} from "./state/todolistsReducer";
+import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC, tasksReducer} from "./state/tasksReducer";
 
 export type FilterValueType = 'all' | 'active' | 'completed'
 
@@ -28,13 +36,13 @@ const todolistId1 = v1()
 const todolistId2 = v1()
 
 
-function App() {
-  const [todolists, setTodolists] = useState<Array<TodolistType>>([
+function AppWithReducers() {
+  const [todolists, dispatchToTodolists] = useReducer(todolistsReducer, [
     {id: todolistId1, title: 'What to Learn', filter: 'all'},
     {id: todolistId2, title: 'What to Buy', filter: 'all'}
   ])
 
-  const [tasks, setTasks] = useState<TasksType>({
+  const [tasks, dispatchToTasks] = useReducer(tasksReducer, {
     [todolistId1]:
       [{id: v1(), title: "HTML&CSS", isDone: true},
         {id: v1(), title: "JS", isDone: true},
@@ -48,71 +56,39 @@ function App() {
   })
 
   function addTask(title: string, todolistId: string) {
-    const newTask: TaskType = {
-      id: v1(),
-      title: title,
-      isDone: false
-    }
-    const todolistTasks = tasks[todolistId]
-    tasks[todolistId] = [newTask, ...todolistTasks]
-    setTasks({...tasks})
+    dispatchToTasks(addTaskAC(title, todolistId))
   }
 
   function removeTask(taskID: string, todolistId: string) {
-    const todolistTasks = tasks[todolistId]
-    tasks[todolistId] = todolistTasks.filter(task => task.id !== taskID)
-    setTasks({...tasks})
+    dispatchToTasks(removeTaskAC(taskID, todolistId))
   }
 
   function changeFilter(filterValue: FilterValueType, todolistId: string) {
-    let todolist = todolists.find(tl => tl.id === todolistId)
-    if (todolist) {
-      todolist.filter = filterValue
-    }
-    setTodolists([...todolists])
+    dispatchToTodolists(changeTodolistFilterAC(todolistId, filterValue))
   }
 
   function changeStatus(taskID: string, isDone: boolean, todolistId: string) {
-    const todolistTasks = tasks[todolistId]
-    const task = todolistTasks.find((task) => task.id === taskID)
-    if (task) {
-      task.isDone = isDone
-      setTasks({...tasks})
-    }
+    dispatchToTasks(changeTaskStatusAC(taskID, isDone, todolistId))
   }
 
   function removeTodolist(todolistId: string) {
-    setTodolists(todolists.filter(tl => tl.id != todolistId))
-    delete tasks[todolistId]
-    setTasks({...tasks})
+    const action = removeTodolistAC(todolistId)
+    dispatchToTodolists(action)
+    dispatchToTasks(action)
   }
 
   function addTodolist(title: string) {
-    const newTodolistID = v1()
-    const newTodolist: TodolistType =
-      {
-        id: newTodolistID,
-        title: title,
-        filter: 'all'
-      }
-    setTodolists([...todolists, newTodolist])
-    setTasks({...tasks, [newTodolistID]: []})
+    const action = addTodolistAC(title)
+    dispatchToTodolists(action)
+    dispatchToTasks(action)
   }
 
   function changeTaskTitle(taskId: string, title: string, todolistId: string) {
-    const task = tasks[todolistId].find(task => task.id === taskId)
-    if (task) {
-      task.title = title
-      setTasks({...tasks})
-    }
+    dispatchToTasks(changeTaskTitleAC(taskId, title, todolistId))
   }
 
   function changeTodolistTitle(title: string, todolistId: string) {
-    const todolist = todolists.find(todolist => todolist.id === todolistId)
-    if (todolist) {
-      todolist.title = title
-    }
-    setTodolists([...todolists])
+    dispatchToTodolists(changeTodolistTitleAC(todolistId, title))
   }
 
   return (
@@ -168,4 +144,4 @@ function App() {
   );
 }
 
-export default App;
+export default AppWithReducers;
