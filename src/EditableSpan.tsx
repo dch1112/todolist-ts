@@ -8,7 +8,8 @@ interface OwnProps {
 
 type Props = OwnProps;
 
-const EditableSpan: FunctionComponent<Props> = (props) => {
+const EditableSpan: FunctionComponent<Props> = React.memo((props) => {
+  console.log('Editable span rendered')
   const [editMode, setEditMode] = useState<boolean>(false)
   const [title, setTitle] = useState<string>(props.value)
   const onEditMode = () => {
@@ -32,6 +33,6 @@ const EditableSpan: FunctionComponent<Props> = (props) => {
         autoFocus/>
       : <span onClick={onEditMode}>{title}</span>
   );
-};
+})
 
 export default EditableSpan;

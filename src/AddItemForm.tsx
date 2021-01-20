@@ -8,8 +8,8 @@ interface OwnProps {
 
 type Props = OwnProps;
 
-const AddItemForm: FunctionComponent<Props> = (props) => {
-
+export const AddItemForm: FunctionComponent<Props> = React.memo((props) => {
+  console.log('AddItemForm rendered')
   const [title, setTitle] = useState<string>('')
   const [error, setError] = useState<string | null>(null)
 
@@ -25,10 +25,10 @@ const AddItemForm: FunctionComponent<Props> = (props) => {
 
   const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
     setTitle(e.currentTarget.value)
-    setError(null)
   }
 
   const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (error !== null) setError(null)
     if (e.key === 'Enter') addItem()
   }
 
@@ -48,6 +48,6 @@ const AddItemForm: FunctionComponent<Props> = (props) => {
       <AddBox/>
     </IconButton>
   </div>);
-};
+});
 
 export default AddItemForm;
