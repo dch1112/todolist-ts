@@ -6,7 +6,7 @@ interface OwnProps {
   getNewTitle: (title: string) => void
 }
 
-type Props = OwnProps;
+export type Props = OwnProps;
 
 const EditableSpan: FunctionComponent<Props> = React.memo((props) => {
   console.log('Editable span rendered')

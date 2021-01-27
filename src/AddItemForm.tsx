@@ -6,7 +6,7 @@ interface OwnProps {
   addItem: (title: string) => void
 }
 
-type Props = OwnProps;
+export type Props = OwnProps;
 
 export const AddItemForm: FunctionComponent<Props> = React.memo((props) => {
   console.log('AddItemForm rendered')

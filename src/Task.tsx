@@ -13,7 +13,7 @@ interface OwnProps {
   changeTaskTitle: (taskId: string, title: string, todolistId: string) => void
 }
 
-type Props = OwnProps;
+export type Props = OwnProps;
 
 const Task: FunctionComponent<Props> = React.memo((props) => {
   const {
